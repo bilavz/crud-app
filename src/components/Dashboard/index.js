@@ -61,7 +61,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
       {!isAdding && !isEditing && (
         <>
           <div className="navbar">
-            
             <Logout setIsAuthenticated={setIsAuthenticated} />
           </div>
           <div>
