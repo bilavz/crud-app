@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing }) => {
-  const id = selectedLiterature.id;
+const Edit = ({ users, selectedUser, setUsers, setIsEditing }) => {
+  const userID = selectedUser.userID;
 
-  const [title, setTitle] = useState(selectedLiterature.title);
-  const [authorId, setAuthorId] = useState(selectedLiterature.authorId);
-  const [synopsis, setSynopsis] = useState(selectedLiterature.synopsis);
-  const [genreId, setGenreId] = useState(selectedLiterature.genreId);
-  const [language, setLanguage] = useState(selectedLiterature.language);
-  const [copyright, setCopyright] = useState(selectedLiterature.copyright);
-  const [imageUrl, setImageUrl] = useState(selectedLiterature.imageUrl);
+  const [username, setUsername] = useState(selectedUser.username);
+  const [email, setEmail] = useState(selectedUser.email);
+  const [password, setPassword] = useState(selectedUser.password);
+  const [bio, setBio] = useState(selectedUser.bio);
+  const [balance, setBalance] = useState(selectedUser.balance);
 
   const handleUpdate = e => {
     e.preventDefault();
 
-    if (!title || !authorId || !synopsis || !genreId || !language || !copyright || !imageUrl) {
+    if (!username || !email || !password || !bio || !balance) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -24,33 +22,26 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
       });
     }
 
-    const literature = {
-      id,
-      title,
-      authorId,
-      synopsis,
-      genreId,
-      language,
-      copyright,
-      imageUrl,
-      created_at: selectedLiterature.created_at
+    const updatedUser = {
+      userID,
+      create_at: selectedUser.create_at,
+      username,
+      email,
+      password,
+      bio,
+      balance: parseFloat(balance),
     };
 
-    for (let i = 0; i < literatures.length; i++) {
-      if (literatures[i].id === id) {
-        literatures.splice(i, 1, literature);
-        break;
-      }
-    }
+    const updatedUsers = users.map(user => user.userID === userID ? updatedUser : user);
 
-    localStorage.setItem('literatures_data', JSON.stringify(literatures));
-    setLiteratures(literatures);
+    localStorage.setItem('users_data', JSON.stringify(updatedUsers));
+    setUsers(updatedUsers);
     setIsEditing(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${literature.title}'s data has been updated.`,
+      text: `User ${username}'s data has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -59,62 +50,45 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
   return (
     <div className="small-container">
       <form onSubmit={handleUpdate}>
-        <h1>Edit Literature</h1>
-        <label htmlFor="title">Title</label>
+        <h1>Edit User</h1>
+        <label htmlFor="username">Username</label>
         <input
-          id="title"
+          id="username"
           type="text"
-          name="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          name="username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
         />
-        <label htmlFor="authorId">Author ID</label>
+        <label htmlFor="email">Email</label>
         <input
-          id="authorId"
-          type="text"
-          name="authorId"
-          value={authorId}
-          onChange={e => setAuthorId(e.target.value)}
+          id="email"
+          type="email"
+          name="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
         />
-        <label htmlFor="synopsis">Synopsis</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="synopsis"
-          type="text"
-          name="synopsis"
-          value={synopsis}
-          onChange={e => setSynopsis(e.target.value)}
+          id="password"
+          type="password"
+          name="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
         />
-        <label htmlFor="genreId">Genre ID</label>
+        <label htmlFor="bio">Bio</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={bio}
+          onChange={e => setBio(e.target.value)}
+        ></textarea>
+        <label htmlFor="balance">Balance</label>
         <input
-          id="genreId"
-          type="text"
-          name="genreId"
-          value={genreId}
-          onChange={e => setGenreId(e.target.value)}
-        />
-        <label htmlFor="language">Language</label>
-        <input
-          id="language"
-          type="text"
-          name="language"
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-        />
-        <label htmlFor="copyright">Copyright</label>
-        <input
-          id="copyright"
-          type="text"
-          name="copyright"
-          value={copyright}
-          onChange={e => setCopyright(e.target.value)}
-        />
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          id="imageUrl"
-          type="text"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
+          id="balance"
+          type="number"
+          name="balance"
+          value={balance}
+          onChange={e => setBalance(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Update" />

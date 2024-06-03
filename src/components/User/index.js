@@ -8,23 +8,23 @@ import Edit from "./Edit";
 import Logout from "../Logout";
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [literatures, setLiteratures] = useState([]);
-  const [selectedLiterature, setSelectedLiterature] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("literatures_data"));
-    if (data !== null && Object.keys(data).length !== 0) setLiteratures(data);
+    const data = JSON.parse(localStorage.getItem("users_data"));
+    if (data !== null && Object.keys(data).length !== 0) setUsers(data);
   }, []);
 
-  const handleEdit = (id) => {
-    const [literature] = literatures.filter((literature) => literature.id === id);
-    setSelectedLiterature(literature);
+  const handleEdit = (userID) => {
+    const [user] = users.filter((user) => user.userID === userID);
+    setSelectedUser(user);
     setIsEditing(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (userID) => {
     Swal.fire({
       icon: "warning",
       title: "Are you sure?",
@@ -34,19 +34,19 @@ const Dashboard = ({ setIsAuthenticated }) => {
       cancelButtonText: "No, cancel!",
     }).then((result) => {
       if (result.value) {
-        const [literature] = literatures.filter((literature) => literature.id === id);
+        const [user] = users.filter((user) => user.userID === userID);
 
         Swal.fire({
           icon: "success",
           title: "Deleted!",
-          text: `${literature.title}'s data has been deleted.`,
+          text: `${user.username}'s data has been deleted.`,
           showConfirmButton: false,
           timer: 1500,
         });
 
-        const literaturesCopy = literatures.filter((literature) => literature.id !== id);
-        localStorage.setItem("literatures_data", JSON.stringify(literaturesCopy));
-        setLiteratures(literaturesCopy);
+        const usersCopy = users.filter((user) => user.userID !== userID);
+        localStorage.setItem("users_data", JSON.stringify(usersCopy));
+        setUsers(usersCopy);
       }
     });
   };
@@ -60,15 +60,15 @@ const Dashboard = ({ setIsAuthenticated }) => {
           </div>
           <div>
             <Header setIsAdding={setIsAdding} setIsAuthenticated={setIsAuthenticated} />
-            <Table literatures={literatures} handleEdit={handleEdit} handleDelete={handleDelete} />
+            <Table users={users} handleEdit={handleEdit} handleDelete={handleDelete} />
           </div>
         </>
       )}
       {isAdding && (
-        <Add literatures={literatures} setLiteratures={setLiteratures} setIsAdding={setIsAdding} />
+        <Add users={users} setUsers={setUsers} setIsAdding={setIsAdding} />
       )}
       {isEditing && (
-        <Edit literatures={literatures} selectedLiterature={selectedLiterature} setLiteratures={setLiteratures} setIsEditing={setIsEditing} />
+        <Edit users={users} selectedUser={selectedUser} setUsers={setUsers} setIsEditing={setIsEditing} />
       )}
     </div>
   );

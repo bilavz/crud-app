@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing }) => {
-  const id = selectedLiterature.id;
+const Edit = ({ forums, selectedForum, setForums, setIsEditing }) => {
+  const id = selectedForum.forumId;
 
-  const [title, setTitle] = useState(selectedLiterature.title);
-  const [authorId, setAuthorId] = useState(selectedLiterature.authorId);
-  const [synopsis, setSynopsis] = useState(selectedLiterature.synopsis);
-  const [genreId, setGenreId] = useState(selectedLiterature.genreId);
-  const [language, setLanguage] = useState(selectedLiterature.language);
-  const [copyright, setCopyright] = useState(selectedLiterature.copyright);
-  const [imageUrl, setImageUrl] = useState(selectedLiterature.imageUrl);
+  const [titleForum, setTitleForum] = useState(selectedForum.titleForum);
+  const [forumContents, setForumContents] = useState(selectedForum.forumContents);
+  const [votes, setVotes] = useState(selectedForum.votes);
+  const [userId, setUserId] = useState(selectedForum.userId);
+  const [genreId, setGenreId] = useState(selectedForum.genreId);
 
   const handleUpdate = e => {
     e.preventDefault();
 
-    if (!title || !authorId || !synopsis || !genreId || !language || !copyright || !imageUrl) {
+    if (!titleForum || !forumContents || !votes || !userId || !genreId) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -24,33 +22,31 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
       });
     }
 
-    const literature = {
-      id,
-      title,
-      authorId,
-      synopsis,
-      genreId,
-      language,
-      copyright,
-      imageUrl,
-      created_at: selectedLiterature.created_at
+    const forum = {
+      forumId: id,
+      titleForum,
+      forumContents,
+      votes: parseInt(votes, 10),
+      forum_create_at: selectedForum.forum_create_at,
+      userId,
+      genreId: parseInt(genreId, 10),
     };
 
-    for (let i = 0; i < literatures.length; i++) {
-      if (literatures[i].id === id) {
-        literatures.splice(i, 1, literature);
+    for (let i = 0; i < forums.length; i++) {
+      if (forums[i].forumId === id) {
+        forums.splice(i, 1, forum);
         break;
       }
     }
 
-    localStorage.setItem('literatures_data', JSON.stringify(literatures));
-    setLiteratures(literatures);
+    localStorage.setItem('forums_data', JSON.stringify(forums));
+    setForums(forums);
     setIsEditing(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${literature.title}'s data has been updated.`,
+      text: `${forum.titleForum}'s data has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -59,62 +55,45 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
   return (
     <div className="small-container">
       <form onSubmit={handleUpdate}>
-        <h1>Edit Literature</h1>
-        <label htmlFor="title">Title</label>
+        <h1>Edit Forum</h1>
+        <label htmlFor="titleForum">Title</label>
         <input
-          id="title"
+          id="titleForum"
           type="text"
-          name="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          name="titleForum"
+          value={titleForum}
+          onChange={e => setTitleForum(e.target.value)}
         />
-        <label htmlFor="authorId">Author ID</label>
-        <input
-          id="authorId"
-          type="text"
-          name="authorId"
-          value={authorId}
-          onChange={e => setAuthorId(e.target.value)}
+        <label htmlFor="forumContents">Contents</label>
+        <textarea
+          id="forumContents"
+          name="forumContents"
+          value={forumContents}
+          onChange={e => setForumContents(e.target.value)}
         />
-        <label htmlFor="synopsis">Synopsis</label>
+        <label htmlFor="votes">Votes</label>
         <input
-          id="synopsis"
+          id="votes"
+          type="number"
+          name="votes"
+          value={votes}
+          onChange={e => setVotes(e.target.value)}
+        />
+        <label htmlFor="userId">User ID</label>
+        <input
+          id="userId"
           type="text"
-          name="synopsis"
-          value={synopsis}
-          onChange={e => setSynopsis(e.target.value)}
+          name="userId"
+          value={userId}
+          onChange={e => setUserId(e.target.value)}
         />
         <label htmlFor="genreId">Genre ID</label>
         <input
           id="genreId"
-          type="text"
+          type="number"
           name="genreId"
           value={genreId}
           onChange={e => setGenreId(e.target.value)}
-        />
-        <label htmlFor="language">Language</label>
-        <input
-          id="language"
-          type="text"
-          name="language"
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-        />
-        <label htmlFor="copyright">Copyright</label>
-        <input
-          id="copyright"
-          type="text"
-          name="copyright"
-          value={copyright}
-          onChange={e => setCopyright(e.target.value)}
-        />
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          id="imageUrl"
-          type="text"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Update" />

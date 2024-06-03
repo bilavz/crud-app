@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Table = ({ literatures, handleEdit, handleDelete }) => {
+const Table = ({ forums, handleEdit, handleDelete }) => {
   return (
     <div className="contain-table">
       <table className="striped-table">
@@ -8,30 +8,28 @@ const Table = ({ literatures, handleEdit, handleDelete }) => {
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Author ID</th>
-            <th>Synopsis</th>
+            <th>Contents</th>
+            <th>Votes</th>
+            <th>Created At</th>
+            <th>User ID</th>
             <th>Genre ID</th>
-            <th>Language</th>
-            <th>Copyright</th>
-            <th>Image URL</th>
             <th colSpan={2} className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {literatures.length > 0 ? (
-            literatures.map((literature, i) => (
-              <tr key={literature.id}>
-                <td>{literature.id}</td>
-                <td>{literature.title}</td>
-                <td>{literature.authorId}</td>
-                <td>{literature.synopsis}</td>
-                <td>{literature.genreId}</td>
-                <td>{literature.language}</td>
-                <td>{literature.copyright}</td>
-                <td>{literature.imageUrl}</td>
+          {forums.length > 0 ? (
+            forums.map((forum) => (
+              <tr key={forum.forumID}>
+                <td>{forum.forumID}</td>
+                <td>{forum.titleForum}</td>
+                <td>{forum.forumContents}</td>
+                <td>{forum.votes}</td>
+                <td>{new Date(forum.forum_create_at).toLocaleString()}</td>
+                <td>{forum.userID}</td>
+                <td>{forum.genreID}</td>
                 <td className="text-right">
                   <button
-                    onClick={() => handleEdit(literature.id)}
+                    onClick={() => handleEdit(forum.forumID)}
                     className="button muted-button"
                   >
                     Edit
@@ -39,7 +37,7 @@ const Table = ({ literatures, handleEdit, handleDelete }) => {
                 </td>
                 <td className="text-left">
                   <button
-                    onClick={() => handleDelete(literature.id)}
+                    onClick={() => handleDelete(forum.forumID)}
                     className="button muted-button"
                   >
                     Delete
@@ -49,7 +47,7 @@ const Table = ({ literatures, handleEdit, handleDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan={10} className="text-center">No Literatures Found</td>
+              <td colSpan={9} className="text-center">No Forums Found</td>
             </tr>
           )}
         </tbody>

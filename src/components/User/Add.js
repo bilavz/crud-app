@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Add = ({ literatures, setLiteratures, setIsAdding }) => {
-  const [title, setTitle] = useState('');
-  const [authorId, setAuthorId] = useState('');
-  const [synopsis, setSynopsis] = useState('');
-  const [genreId, setGenreId] = useState('');
-  const [language, setLanguage] = useState('');
-  const [copyright, setCopyright] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+const Add = ({ users, setUsers, setIsAdding }) => {
+  const [userID, setUserID] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [bio, setBio] = useState('');
+  const [balance, setBalance] = useState('');
 
   const handleAdd = e => {
     e.preventDefault();
 
-    if (!title || !authorId || !synopsis || !genreId || !language || !copyright || !imageUrl) {
+    if (!userID || !username || !email || !password || !bio || !balance) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -22,28 +21,25 @@ const Add = ({ literatures, setLiteratures, setIsAdding }) => {
       });
     }
 
-    const id = literatures.length + 1;
-    const newLiterature = {
-      id,
-      title,
-      authorId,
-      synopsis,
-      genreId,
-      language,
-      copyright,
-      imageUrl,
-      created_at: new Date().toISOString()
+    const newUser = {
+      userID,
+      create_at: new Date().toISOString(),
+      username,
+      email,
+      password,
+      bio,
+      balance: parseFloat(balance),
     };
 
-    literatures.push(newLiterature);
-    localStorage.setItem('literatures_data', JSON.stringify(literatures));
-    setLiteratures(literatures);
+    users.push(newUser);
+    localStorage.setItem('users_data', JSON.stringify(users));
+    setUsers(users);
     setIsAdding(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Added!',
-      text: `${title}'s data has been added.`,
+      text: `User ${username} has been added.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -52,62 +48,53 @@ const Add = ({ literatures, setLiteratures, setIsAdding }) => {
   return (
     <div className="small-container">
       <form onSubmit={handleAdd}>
-        <h1>Add Literature</h1>
-        <label htmlFor="title">Title</label>
+        <h1>Add User</h1>
+        <label htmlFor="userID">User ID</label>
         <input
-          id="title"
+          id="userID"
           type="text"
-          name="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          name="userID"
+          value={userID}
+          onChange={e => setUserID(e.target.value)}
         />
-        <label htmlFor="authorId">Author ID</label>
+        <label htmlFor="username">Username</label>
         <input
-          id="authorId"
+          id="username"
           type="text"
-          name="authorId"
-          value={authorId}
-          onChange={e => setAuthorId(e.target.value)}
+          name="username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
         />
-        <label htmlFor="synopsis">Synopsis</label>
+        <label htmlFor="email">Email</label>
         <input
-          id="synopsis"
-          type="text"
-          name="synopsis"
-          value={synopsis}
-          onChange={e => setSynopsis(e.target.value)}
+          id="email"
+          type="email"
+          name="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
         />
-        <label htmlFor="genreId">Genre ID</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="genreId"
-          type="text"
-          name="genreId"
-          value={genreId}
-          onChange={e => setGenreId(e.target.value)}
+          id="password"
+          type="password"
+          name="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
         />
-        <label htmlFor="language">Language</label>
+        <label htmlFor="bio">Bio</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={bio}
+          onChange={e => setBio(e.target.value)}
+        ></textarea>
+        <label htmlFor="balance">Balance</label>
         <input
-          id="language"
-          type="text"
-          name="language"
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-        />
-        <label htmlFor="copyright">Copyright</label>
-        <input
-          id="copyright"
-          type="text"
-          name="copyright"
-          value={copyright}
-          onChange={e => setCopyright(e.target.value)}
-        />
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          id="imageUrl"
-          type="text"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
+          id="balance"
+          type="number"
+          name="balance"
+          value={balance}
+          onChange={e => setBalance(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Add" />

@@ -4,6 +4,8 @@ import Login from '../Login';
 import Dashboard from '../Dashboard';
 import Literature from '../Literature';
 import Comment from '../Comment';
+import Forum from '../Forum';
+import User from '../User';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -15,7 +17,7 @@ const App = () => {
   return (
     <>
       {isAuthenticated ? (
-        <Comment setIsAuthenticated={setIsAuthenticated} />
+        <User setIsAuthenticated={setIsAuthenticated} />
       ) : (
         <Login setIsAuthenticated={setIsAuthenticated} />
       )}
