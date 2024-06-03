@@ -1,37 +1,31 @@
 import React from 'react';
 
-const Table = ({ literatures, handleEdit, handleDelete }) => {
+const Table = ({ comments, handleEdit, handleDelete }) => {
   return (
     <div className="contain-table">
       <table className="striped-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Title</th>
-            <th>Author ID</th>
-            <th>Synopsis</th>
-            <th>Genre ID</th>
-            <th>Language</th>
-            <th>Copyright</th>
-            <th>Image URL</th>
+            <th>Content</th>
+            <th>Created At</th>
+            <th>User ID</th>
+            <th>Forum ID</th>
             <th colSpan={2} className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {literatures.length > 0 ? (
-            literatures.map((literature, i) => (
-              <tr key={literature.id}>
-                <td>{literature.id}</td>
-                <td>{literature.title}</td>
-                <td>{literature.authorId}</td>
-                <td>{literature.synopsis}</td>
-                <td>{literature.genreId}</td>
-                <td>{literature.language}</td>
-                <td>{literature.copyright}</td>
-                <td>{literature.imageUrl}</td>
+          {comments.length > 0 ? (
+            comments.map((comment, i) => (
+              <tr key={comment.forumCommentId}>
+                <td>{comment.forumCommentId}</td>
+                <td>{comment.content}</td>
+                <td>{comment.forumComment_create_at}</td>
+                <td>{comment.userId}</td>
+                <td>{comment.forumId}</td>
                 <td className="text-right">
                   <button
-                    onClick={() => handleEdit(literature.id)}
+                    onClick={() => handleEdit(comment.forumCommentId)}
                     className="button muted-button"
                   >
                     Edit
@@ -39,7 +33,7 @@ const Table = ({ literatures, handleEdit, handleDelete }) => {
                 </td>
                 <td className="text-left">
                   <button
-                    onClick={() => handleDelete(literature.id)}
+                    onClick={() => handleDelete(comment.forumCommentId)}
                     className="button muted-button"
                   >
                     Delete
@@ -49,7 +43,7 @@ const Table = ({ literatures, handleEdit, handleDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan={10} className="text-center">No Literatures Found</td>
+              <td colSpan={7} className="text-center">No Comments Found</td>
             </tr>
           )}
         </tbody>

@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing }) => {
-  const id = selectedLiterature.id;
+const Edit = ({ comments, selectedComment, setComments, setIsEditing }) => {
+  const forumCommentId = selectedComment.forumCommentId;
 
-  const [title, setTitle] = useState(selectedLiterature.title);
-  const [authorId, setAuthorId] = useState(selectedLiterature.authorId);
-  const [synopsis, setSynopsis] = useState(selectedLiterature.synopsis);
-  const [genreId, setGenreId] = useState(selectedLiterature.genreId);
-  const [language, setLanguage] = useState(selectedLiterature.language);
-  const [copyright, setCopyright] = useState(selectedLiterature.copyright);
-  const [imageUrl, setImageUrl] = useState(selectedLiterature.imageUrl);
+  const [content, setContent] = useState(selectedComment.content);
+  const [userId, setUserId] = useState(selectedComment.userId);
+  const [forumId, setForumId] = useState(selectedComment.forumId);
 
   const handleUpdate = e => {
     e.preventDefault();
 
-    if (!title || !authorId || !synopsis || !genreId || !language || !copyright || !imageUrl) {
+    if (!content || !userId || !forumId) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -24,33 +20,29 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
       });
     }
 
-    const literature = {
-      id,
-      title,
-      authorId,
-      synopsis,
-      genreId,
-      language,
-      copyright,
-      imageUrl,
-      created_at: selectedLiterature.created_at
+    const updatedComment = {
+      forumCommentId,
+      content,
+      userId,
+      forumId,
+      forumComment_create_at: selectedComment.forumComment_create_at
     };
 
-    for (let i = 0; i < literatures.length; i++) {
-      if (literatures[i].id === id) {
-        literatures.splice(i, 1, literature);
+    for (let i = 0; i < comments.length; i++) {
+      if (comments[i].forumCommentId === forumCommentId) {
+        comments.splice(i, 1, updatedComment);
         break;
       }
     }
 
-    localStorage.setItem('literatures_data', JSON.stringify(literatures));
-    setLiteratures(literatures);
+    localStorage.setItem('comments_data', JSON.stringify(comments));
+    setComments(comments);
     setIsEditing(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${literature.title}'s data has been updated.`,
+      text: `Comment has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -59,62 +51,30 @@ const Edit = ({ literatures, selectedLiterature, setLiteratures, setIsEditing })
   return (
     <div className="small-container">
       <form onSubmit={handleUpdate}>
-        <h1>Edit Literature</h1>
-        <label htmlFor="title">Title</label>
+        <h1>Edit Comment</h1>
+        <label htmlFor="content">Content</label>
         <input
-          id="title"
+          id="content"
           type="text"
-          name="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          name="content"
+          value={content}
+          onChange={e => setContent(e.target.value)}
         />
-        <label htmlFor="authorId">Author ID</label>
+        <label htmlFor="userId">User ID</label>
         <input
-          id="authorId"
+          id="userId"
           type="text"
-          name="authorId"
-          value={authorId}
-          onChange={e => setAuthorId(e.target.value)}
+          name="userId"
+          value={userId}
+          onChange={e => setUserId(e.target.value)}
         />
-        <label htmlFor="synopsis">Synopsis</label>
+        <label htmlFor="forumId">Forum ID</label>
         <input
-          id="synopsis"
+          id="forumId"
           type="text"
-          name="synopsis"
-          value={synopsis}
-          onChange={e => setSynopsis(e.target.value)}
-        />
-        <label htmlFor="genreId">Genre ID</label>
-        <input
-          id="genreId"
-          type="text"
-          name="genreId"
-          value={genreId}
-          onChange={e => setGenreId(e.target.value)}
-        />
-        <label htmlFor="language">Language</label>
-        <input
-          id="language"
-          type="text"
-          name="language"
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-        />
-        <label htmlFor="copyright">Copyright</label>
-        <input
-          id="copyright"
-          type="text"
-          name="copyright"
-          value={copyright}
-          onChange={e => setCopyright(e.target.value)}
-        />
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          id="imageUrl"
-          type="text"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
+          name="forumId"
+          value={forumId}
+          onChange={e => setForumId(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Update" />

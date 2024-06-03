@@ -5,9 +5,9 @@ import Logout from '../Logout';
 const Header = ({ setIsAdding, setIsAuthenticated }) => {
   return (
     <header>
-      <h1>Literature management</h1>
+      <h1>Comment management</h1>
       <div style={{ marginTop: '30px', marginBottom: '18px' }}>
-        <button onClick={() => setIsAdding(true)}>Add literature</button>
+        <button onClick={() => setIsAdding(true)}>Add Comment</button>
       </div>
     </header>
   );

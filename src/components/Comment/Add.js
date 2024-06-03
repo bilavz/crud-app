@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Add = ({ literatures, setLiteratures, setIsAdding }) => {
-  const [title, setTitle] = useState('');
-  const [authorId, setAuthorId] = useState('');
-  const [synopsis, setSynopsis] = useState('');
-  const [genreId, setGenreId] = useState('');
-  const [language, setLanguage] = useState('');
-  const [copyright, setCopyright] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+const Add = ({ comments, setComments, setIsAdding }) => {
+  const [content, setContent] = useState('');
+  const [userId, setUserId] = useState('');
+  const [forumId, setForumId] = useState('');
 
   const handleAdd = e => {
     e.preventDefault();
 
-    if (!title || !authorId || !synopsis || !genreId || !language || !copyright || !imageUrl) {
+    if (!content || !userId || !forumId) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -22,28 +18,24 @@ const Add = ({ literatures, setLiteratures, setIsAdding }) => {
       });
     }
 
-    const id = literatures.length + 1;
-    const newLiterature = {
-      id,
-      title,
-      authorId,
-      synopsis,
-      genreId,
-      language,
-      copyright,
-      imageUrl,
-      created_at: new Date().toISOString()
+    const id = comments.length + 1;
+    const newComment = {
+      forumCommentId: id,
+      content,
+      userId,
+      forumId,
+      forumComment_create_at: new Date().toISOString()
     };
 
-    literatures.push(newLiterature);
-    localStorage.setItem('literatures_data', JSON.stringify(literatures));
-    setLiteratures(literatures);
+    comments.push(newComment);
+    localStorage.setItem('comments_data', JSON.stringify(comments));
+    setComments(comments);
     setIsAdding(false);
 
     Swal.fire({
       icon: 'success',
       title: 'Added!',
-      text: `${title}'s data has been added.`,
+      text: `Comment has been added.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -52,62 +44,30 @@ const Add = ({ literatures, setLiteratures, setIsAdding }) => {
   return (
     <div className="small-container">
       <form onSubmit={handleAdd}>
-        <h1>Add Literature</h1>
-        <label htmlFor="title">Title</label>
+        <h1>Add Comment</h1>
+        <label htmlFor="content">Content</label>
         <input
-          id="title"
+          id="content"
           type="text"
-          name="title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          name="content"
+          value={content}
+          onChange={e => setContent(e.target.value)}
         />
-        <label htmlFor="authorId">Author ID</label>
+        <label htmlFor="userId">User ID</label>
         <input
-          id="authorId"
+          id="userId"
           type="text"
-          name="authorId"
-          value={authorId}
-          onChange={e => setAuthorId(e.target.value)}
+          name="userId"
+          value={userId}
+          onChange={e => setUserId(e.target.value)}
         />
-        <label htmlFor="synopsis">Synopsis</label>
+        <label htmlFor="forumId">Forum ID</label>
         <input
-          id="synopsis"
+          id="forumId"
           type="text"
-          name="synopsis"
-          value={synopsis}
-          onChange={e => setSynopsis(e.target.value)}
-        />
-        <label htmlFor="genreId">Genre ID</label>
-        <input
-          id="genreId"
-          type="text"
-          name="genreId"
-          value={genreId}
-          onChange={e => setGenreId(e.target.value)}
-        />
-        <label htmlFor="language">Language</label>
-        <input
-          id="language"
-          type="text"
-          name="language"
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-        />
-        <label htmlFor="copyright">Copyright</label>
-        <input
-          id="copyright"
-          type="text"
-          name="copyright"
-          value={copyright}
-          onChange={e => setCopyright(e.target.value)}
-        />
-        <label htmlFor="imageUrl">Image URL</label>
-        <input
-          id="imageUrl"
-          type="text"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={e => setImageUrl(e.target.value)}
+          name="forumId"
+          value={forumId}
+          onChange={e => setForumId(e.target.value)}
         />
         <div style={{ marginTop: '30px' }}>
           <input type="submit" value="Add" />
